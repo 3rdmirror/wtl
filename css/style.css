@@ -1,0 +1,739 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+}
+
+.logo {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-item {
+    margin-bottom: 10px;
+}
+
+.nav-item a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+}
+
+.nav-item.active a,
+.nav-item a:hover {
+    background-color: #34495e;
+}
+
+/* 主内容区域样式 */
+.content {
+    flex: 1;
+    padding: 30px;
+    background-color: #f5f6fa;
+}
+
+/* 计算器容器样式 */
+.calculator-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.calculator-form {
+    margin-top: 20px;
+}
+
+.calc-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.input-group input[type="number"] {
+    width: 200px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+}
+
+button {
+    padding: 8px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.result {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.chinese-amount {
+    margin-top: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 结果表格样式 */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.result-table th,
+.result-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.result-table th {
+    background-color: #f5f6fa;
+    font-weight: bold;
+}
+
+.result-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.result-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* 添加隐藏类 */
+.hidden {
+    display: none;
+}
+
+/* 清除按钮样式 */
+.clear-btn {
+    background-color: #e74c3c;
+}
+
+.clear-btn:hover {
+    background-color: #c0392b;
+}
+
+/* 快捷键提示样式 */
+.keyboard-tips {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    font-size: 14px;
+    border-top: 1px solid #eee;
+}
+
+.keyboard-tips p {
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.keyboard-tips ul {
+    list-style: none;
+}
+
+.keyboard-tips li {
+    display: inline-block;
+    margin-right: 20px;
+    color: #666;
+}
+
+.keyboard-tips li::before {
+    content: '⌨️';
+    margin-right: 5px;
+}
+
+/* Logo容器样式 */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+
+/* Logo符号样式 */
+.logo-symbol {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.logo-circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2.5px solid #4a90e2;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.logo-star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo-star::before {
+    content: '★';
+    position: absolute;
+    font-size: 18px;
+    color: #4a90e2;
+    transform: translate(-50%, -50%);
+    animation: twinkle 1.5s infinite;
+}
+
+/* Logo文字样式 */
+.logo-text {
+    font-size: 22px;
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* 动画效果 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* 添加媒体查询 */
+@media screen and (max-width: 1024px) {
+    .calculator-container {
+        padding: 15px;
+    }
+    
+    .input-group {
+        gap: 8px;
+    }
+    
+    input {
+        width: 140px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .logo-container {
+        margin-bottom: 15px;
+    }
+    
+    .nav-list {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+    
+    .nav-item {
+        margin: 0 5px;
+        white-space: nowrap;
+    }
+    
+    .content {
+        padding: 15px;
+    }
+    
+    .calc-section {
+        padding: 15px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    input, button {
+        width: 100%;
+    }
+    
+    .result-table {
+        font-size: 14px;
+    }
+    
+    .result-table th,
+    .result-table td {
+        padding: 6px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .calculator-container {
+        padding: 10px;
+    }
+    
+    .calc-section {
+        padding: 10px;
+    }
+    
+    .logo-text {
+        font-size: 20px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    h3 {
+        font-size: 16px;
+    }
+    
+    .keyboard-tips {
+        padding: 10px;
+    }
+    
+    .keyboard-tips li {
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+/* 添加滚动条样式 */
+.nav-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.nav-list::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+}
+
+.nav-list::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+}
+
+.nav-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* 显示选项按钮样式 */
+.display-options {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.display-btn {
+    padding: 8px 16px;
+    background-color: #f5f6fa;
+    color: #2c3e50;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.display-btn.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* 文本格式结果样式 */
+.result-text {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    line-height: 1.8;
+}
+
+.text-line {
+    margin-bottom: 12px;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.text-line:last-child {
+    margin-bottom: 0;
+}
+
+.text-line span {
+    margin: 0 4px;
+    font-weight: 500;
+}
+
+/* 大写金额样式 */
+.text-line span + span {
+    font-weight: normal;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 复制按钮 */
+.result-text {
+    position: relative;
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.copy-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 复制提示样式 */
+.copy-tip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+.copy-tip.fade-out {
+    animation: fadeOut 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* 表格单元格悬停效果 */
+.result-table td {
+    transition: background-color 0.2s;
+}
+
+.result-table td:hover {
+    background-color: #e8f4fc;
+}
+
+/* 合同款项计算器特定样式 */
+.payment-ratios {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.payment-ratios h4 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.ratio-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.ratio-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ratio-input label {
+    white-space: nowrap;
+}
+
+.ratio-input input {
+    width: 80px;
+}
+
+/* 计算器容器切换 */
+.calculator-container.hidden {
+    display: none;
+}
+
+/* 导航项样式优化 */
+.nav-item a {
+    position: relative;
+    transition: all 0.3s;
+}
+
+.nav-item.active a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background-color: #3498db;
+}
+
+/* 文本行的悬停效果 */
+.text-line {
+    transition: background-color 0.2s;
+}
+
+.text-line[data-copy]:hover {
+    background-color: #f0f8ff;
+    border-radius: 4px;
+}
+
+/* 添加子行样式 */
+.sub-line {
+    margin-left: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* 调整表格列宽 */
+.result-table th,
+.result-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.result-table td:nth-child(3),
+.result-table td:nth-child(4),
+.result-table td:nth-child(5) {
+    min-width: 120px;
+}
+
+.result-table td:last-child {
+    min-width: 200px;
+}
+
+/* 添加表格头部样式 */
+.table-header {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.table-header .copy-btn {
+    position: absolute;
+    right: 0;
+    top: -45px;
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-header .copy-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.table-header .copy-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 表格头部和复制按钮容器样式 */
+.table-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* 调整表格容器样式 */
+.result {
+    position: relative;
+    padding-top: 10px;
+}
+
+/* 确保表格正常显示 */
+.result-table {
+    width: 100%;
+    margin-top: 0;
+}
+
+/* 添加货币换算工具相关样式 */
+.exchange-icon {
+    font-size: 20px;
+    margin: 0 10px;
+    color: #3498db;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.exchange-icon:hover {
+    transform: scale(1.2);
+    color: #2980b9;
+}
+
+.exchange-icon:active {
+    transform: scale(0.9);
+}
+
+select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    min-width: 150px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* 调整输入组样式以适应新的布局 */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.input-group input[type="number"] {
+    width: 200px;
+}
+
+/* 货币清单表格样式 */
+.currency-list-section {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.currency-list-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.currency-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.currency-list-table th,
+.currency-list-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+}
+
+.currency-list-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.currency-list-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.currency-list-table tr:hover {
+    background-color: #f0f0f0;
+} 

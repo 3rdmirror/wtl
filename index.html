@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法师</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar">
+        <div class="logo-container">
+            <div class="logo-symbol">
+                <span class="logo-circle"></span>
+                <span class="logo-star"></span>
+            </div>
+            <h1 class="logo-text">魔法师</h1>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active">
+                <a href="#tax-calculator">税金税率计算器</a>
+            </li>
+            <li class="nav-item">
+                <a href="#contract-calculator">合同款项计算器</a>
+            </li>
+            <li class="nav-item">
+                <a href="#currency-calculator">货币汇率换算</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- 右侧内容区域 -->
+    <main class="content">
+        <div id="tax-calculator" class="calculator-container">
+            <div class="display-options">
+                <button class="display-btn active" data-format="table">表格显示</button>
+                <button class="display-btn" data-format="text">文本显示</button>
+            </div>
+            <h2>税金税率计算器</h2>
+            <!-- 计算器表单 -->
+            <div class="calculator-form">
+                <div class="calc-section">
+                    <h3>未含税转含税计算</h3>
+                    <div class="input-group">
+                        <label for="amount1">未含税金额：</label>
+                        <input type="number" id="amount1" step="0.01">
+                        <label for="rate1">税率(%)：</label>
+                        <input type="number" id="rate1" step="1" value="6">
+                        <button onclick="calculateWithTax()">计算</button>
+                        <button class="clear-btn" onclick="clearResult(1)">清除</button>
+                    </div>
+                    <div class="result">
+                        <table class="result-table hidden" id="resultTable1">
+                            <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>金额</th>
+                                    <th>大写</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>含税金额</td>
+                                    <td id="result1">0.00</td>
+                                    <td id="result1Chinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>未税金额</td>
+                                    <td id="result1WithoutTax">0.00</td>
+                                    <td id="result1WithoutTaxChinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>税额</td>
+                                    <td id="result1Tax">0.00</td>
+                                    <td id="result1TaxChinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>税率</td>
+                                    <td colspan="2" id="result1Rate">6%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="result-text hidden" id="resultText1">
+                            <div class="text-line">含税金额：¥<span id="textResult1">0.00</span>（<span id="textResult1Chinese">零元整</span>）</div>
+                            <div class="text-line">未税金额：¥<span id="textResult1WithoutTax">0.00</span>（<span id="textResult1WithoutTaxChinese">零元整</span>）</div>
+                            <div class="text-line">税额：¥<span id="textResult1Tax">0.00</span>（<span id="textResult1TaxChinese">零元整</span>）</div>
+                            <div class="text-line">税率：<span id="textResult1Rate">6%</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-section">
+                    <h3>含税转未含税计算</h3>
+                    <div class="input-group">
+                        <label for="amount2">含税金额：</label>
+                        <input type="number" id="amount2" step="0.01">
+                        <label for="rate2">税率(%)：</label>
+                        <input type="number" id="rate2" step="1" value="6">
+                        <button onclick="calculateWithoutTax()">计算</button>
+                        <button class="clear-btn" onclick="clearResult(2)">清除</button>
+                    </div>
+                    <div class="result">
+                        <table class="result-table hidden" id="resultTable2">
+                            <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>金额</th>
+                                    <th>大写</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>含税金额</td>
+                                    <td id="result2WithTax">0.00</td>
+                                    <td id="result2WithTaxChinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>未税金额</td>
+                                    <td id="result2">0.00</td>
+                                    <td id="result2Chinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>税额</td>
+                                    <td id="result2Tax">0.00</td>
+                                    <td id="result2TaxChinese">零元整</td>
+                                </tr>
+                                <tr>
+                                    <td>税率</td>
+                                    <td colspan="2" id="result2Rate">6%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="result-text hidden" id="resultText2">
+                            <div class="text-line">含税金额：¥<span id="textResult2WithTax">0.00</span>（<span id="textResult2WithTaxChinese">零元整</span>）</div>
+                            <div class="text-line">未税金额：¥<span id="textResult2">0.00</span>（<span id="textResult2Chinese">零元整</span>）</div>
+                            <div class="text-line">税额：¥<span id="textResult2Tax">0.00</span>（<span id="textResult2TaxChinese">零元整</span>）</div>
+                            <div class="text-line">税率：<span id="textResult2Rate">6%</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-section">
+                    <h3>税率计算</h3>
+                    <div class="input-group">
+                        <label for="withTax">含税金额：</label>
+                        <input type="number" id="withTax" step="0.01">
+                        <label for="withoutTax">未含税金额：</label>
+                        <input type="number" id="withoutTax" step="0.01">
+                        <button onclick="calculateTaxRate()">计算</button>
+                        <button class="clear-btn" onclick="clearResult(3)">清除</button>
+                    </div>
+                    <div class="result">
+                        税率：<span id="result3">0.00</span>%
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 在底部添加快捷键说明 -->
+            <div class="keyboard-tips">
+                <p>快捷键说明：</p>
+                <ul>
+                    <li>Enter - 计算</li>
+                    <li>Esc - 清除</li>
+                    <li>Tab - 切换输入框</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="contract-calculator" class="calculator-container hidden">
+            <h2>合同款项计算器</h2>
+            <div class="calculator-form">
+                <div class="calc-section">
+                    <h3>合同金额计算</h3>
+                    <div class="input-group">
+                        <label for="totalAmount">合同总金额：</label>
+                        <input type="number" id="totalAmount" step="0.01">
+                        <label for="contractTaxRate">税率(%)：</label>
+                        <input type="number" id="contractTaxRate" step="1" value="6">
+                        <label for="paymentCount">付款次数：</label>
+                        <input type="number" id="paymentCount" min="1" value="3">
+                        <button onclick="calculateContractPayments()">计算</button>
+                        <button class="clear-btn" onclick="clearContractResult()">清除</button>
+                    </div>
+                    <div class="payment-ratios">
+                        <h4>付款比例设置</h4>
+                        <div id="ratioInputs" class="ratio-inputs">
+                            <!-- 动态生成比例输入框 -->
+                        </div>
+                    </div>
+                    <div class="result">
+                        <div class="table-actions">
+                            <button class="copy-btn" onclick="copyTableContent()">复制表格</button>
+                            <button class="copy-btn" onclick="copyTableTextContent()">复制表格文本</button>
+                        </div>
+                        <table class="result-table hidden" id="contractResultTable">
+                            <thead>
+                                <tr>
+                                    <th>付款阶段</th>
+                                    <th>比例</th>
+                                    <th>金额</th>
+                                    <th>税额</th>
+                                    <th>未税金额</th>
+                                    <th>大写</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentResults">
+                                <!-- 动态生成结果行 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="currency-calculator" class="calculator-container hidden">
+            <h2>货币汇率换算工具</h2>
+            <div class="calculator-form">
+                <div class="calc-section">
+                    <h3>汇率换算</h3>
+                    <div class="input-group">
+                        <label for="amount">金额：</label>
+                        <input type="number" id="currencyAmount" step="0.01" value="1">
+                        <select id="fromCurrency">
+                            <option value="CNY">人民币 (CNY)</option>
+                            <option value="USD">美元 (USD)</option>
+                            <option value="EUR">欧元 (EUR)</option>
+                            <option value="GBP">英镑 (GBP)</option>
+                            <option value="JPY">日元 (JPY)</option>
+                            <option value="HKD">港元 (HKD)</option>
+                            <option value="KRW">韩元 (KRW)</option>
+                            <option value="SGD">新加坡元 (SGD)</option>
+                            <option value="AUD">澳元 (AUD)</option>
+                            <option value="CAD">加元 (CAD)</option>
+                            <option value="CHF">瑞士法郎 (CHF)</option>
+                            <option value="NZD">新西兰元 (NZD)</option>
+                            <option value="RUB">卢布 (RUB)</option>
+                            <option value="INR">印度卢比 (INR)</option>
+                            <option value="BRL">雷亚尔 (BRL)</option>
+                        </select>
+                        <span class="exchange-icon" onclick="swapCurrencies()">⇄</span>
+                        <select id="toCurrency">
+                            <option value="USD">美元 (USD)</option>
+                            <option value="CNY">人民币 (CNY)</option>
+                            <option value="EUR">欧元 (EUR)</option>
+                            <option value="GBP">英镑 (GBP)</option>
+                            <option value="JPY">日元 (JPY)</option>
+                            <option value="HKD">港元 (HKD)</option>
+                            <option value="KRW">韩元 (KRW)</option>
+                            <option value="SGD">新加坡元 (SGD)</option>
+                            <option value="AUD">澳元 (AUD)</option>
+                            <option value="CAD">加元 (CAD)</option>
+                            <option value="CHF">瑞士法郎 (CHF)</option>
+                            <option value="NZD">新西兰元 (NZD)</option>
+                            <option value="RUB">卢布 (RUB)</option>
+                            <option value="INR">印度卢比 (INR)</option>
+                            <option value="BRL">雷亚尔 (BRL)</option>
+                        </select>
+                        <button onclick="calculateExchange()">计算</button>
+                        <button class="clear-btn" onclick="clearExchangeResult()">清除</button>
+                    </div>
+                    <div class="result">
+                        <table class="result-table hidden" id="exchangeResultTable">
+                            <thead>
+                                <tr>
+                                    <th>原币种</th>
+                                    <th>目标币种</th>
+                                    <th>汇率</th>
+                                    <th>换算结果</th>
+                                    <th>大写</th>
+                                </tr>
+                            </thead>
+                            <tbody id="exchangeResults">
+                                <!-- 动态生成结果行 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 世界主要货币一览表 -->
+                <div class="currency-list-section">
+                    <h3>世界主要货币一览表</h3>
+                    <div class="table-container">
+                        <table class="currency-list-table">
+                            <thead>
+                                <tr>
+                                    <th>国家/地区</th>
+                                    <th>货币名称</th>
+                                    <th>英文名称</th>
+                                    <th>货币符号</th>
+                                    <th>标准代码</th>
+                                    <th>货币单位</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>中国</td>
+                                    <td>人民币</td>
+                                    <td>Chinese Yuan</td>
+                                    <td>¥</td>
+                                    <td>CNY</td>
+                                    <td>1元=10角=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>中国香港</td>
+                                    <td>港元</td>
+                                    <td>Hong Kong Dollar</td>
+                                    <td>HK$</td>
+                                    <td>HKD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>中国澳门</td>
+                                    <td>澳门元</td>
+                                    <td>Macau Pataca</td>
+                                    <td>MOP$</td>
+                                    <td>MOP</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>中国台湾</td>
+                                    <td>新台币</td>
+                                    <td>New Taiwan Dollar</td>
+                                    <td>NT$</td>
+                                    <td>TWD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>美国</td>
+                                    <td>美元</td>
+                                    <td>US Dollar</td>
+                                    <td>US$</td>
+                                    <td>USD</td>
+                                    <td>1美元=100美分</td>
+                                </tr>
+                                <tr>
+                                    <td>欧盟</td>
+                                    <td>欧元</td>
+                                    <td>Euro</td>
+                                    <td>€</td>
+                                    <td>EUR</td>
+                                    <td>1欧元=100欧分</td>
+                                </tr>
+                                <tr>
+                                    <td>英国</td>
+                                    <td>英镑</td>
+                                    <td>British Pound</td>
+                                    <td>£</td>
+                                    <td>GBP</td>
+                                    <td>1镑=100便士</td>
+                                </tr>
+                                <tr>
+                                    <td>日本</td>
+                                    <td>日元</td>
+                                    <td>Japanese Yen</td>
+                                    <td>¥</td>
+                                    <td>JPY</td>
+                                    <td>1日元=100钱</td>
+                                </tr>
+                                <tr>
+                                    <td>韩国</td>
+                                    <td>韩元</td>
+                                    <td>Korean Won</td>
+                                    <td>₩</td>
+                                    <td>KRW</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>新加坡</td>
+                                    <td>新加坡元</td>
+                                    <td>Singapore Dollar</td>
+                                    <td>S$</td>
+                                    <td>SGD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>澳大利亚</td>
+                                    <td>澳元</td>
+                                    <td>Australian Dollar</td>
+                                    <td>A$</td>
+                                    <td>AUD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>加拿大</td>
+                                    <td>加元</td>
+                                    <td>Canadian Dollar</td>
+                                    <td>C$</td>
+                                    <td>CAD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>瑞士</td>
+                                    <td>瑞士法郎</td>
+                                    <td>Swiss Franc</td>
+                                    <td>CHF</td>
+                                    <td>CHF</td>
+                                    <td>1法郎=100生丁</td>
+                                </tr>
+                                <tr>
+                                    <td>新西兰</td>
+                                    <td>新西兰元</td>
+                                    <td>New Zealand Dollar</td>
+                                    <td>NZ$</td>
+                                    <td>NZD</td>
+                                    <td>1元=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>俄罗斯</td>
+                                    <td>卢布</td>
+                                    <td>Russian Ruble</td>
+                                    <td>₽</td>
+                                    <td>RUB</td>
+                                    <td>1卢布=100戈比</td>
+                                </tr>
+                                <tr>
+                                    <td>印度</td>
+                                    <td>印度卢比</td>
+                                    <td>Indian Rupee</td>
+                                    <td>₹</td>
+                                    <td>INR</td>
+                                    <td>1卢比=100派萨</td>
+                                </tr>
+                                <tr>
+                                    <td>巴西</td>
+                                    <td>雷亚尔</td>
+                                    <td>Brazilian Real</td>
+                                    <td>R$</td>
+                                    <td>BRL</td>
+                                    <td>1雷亚尔=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>南非</td>
+                                    <td>兰特</td>
+                                    <td>South African Rand</td>
+                                    <td>R</td>
+                                    <td>ZAR</td>
+                                    <td>1兰特=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>墨西哥</td>
+                                    <td>墨西哥比索</td>
+                                    <td>Mexican Peso</td>
+                                    <td>Mex$</td>
+                                    <td>MXN</td>
+                                    <td>1比索=100分</td>
+                                </tr>
+                                <tr>
+                                    <td>泰国</td>
+                                    <td>泰铢</td>
+                                    <td>Thai Baht</td>
+                                    <td>฿</td>
+                                    <td>THB</td>
+                                    <td>1铢=100萨当</td>
+                                </tr>
+                                <tr>
+                                    <td>马来西亚</td>
+                                    <td>林吉特</td>
+                                    <td>Malaysian Ringgit</td>
+                                    <td>RM</td>
+                                    <td>MYR</td>
+                                    <td>1林吉特=100分</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="js/tax-calculator.js"></script>
+    <script src="js/contract-calculator.js"></script>
+    <script src="js/currency-calculator.js"></script>
+</body>
+</html> 
