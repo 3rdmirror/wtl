@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片工具 - 在线工具集</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧导航栏 -->
+            <div class="col-md-2 bg-dark sidebar p-0">
+                <div class="text-center py-4">
+                    <h3 class="text-white">工具集</h3>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">
+                                <i class="fas fa-home"></i> 首页
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="text-tools.html">
+                                <i class="fas fa-font"></i> 文本工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="image-tools.html">
+                                <i class="fas fa-image"></i> 图片工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="conversion-tools.html">
+                                <i class="fas fa-exchange-alt"></i> 转换工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="calculator-tools.html">
+                                <i class="fas fa-calculator"></i> 计算工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="developer-tools.html">
+                                <i class="fas fa-code"></i> 开发者工具
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="col-md-10 main-content">
+                <!-- 顶部导航栏 -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        
+                        <!-- 搜索框 -->
+                        <div class="search-container mx-auto">
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="搜索工具..." aria-label="Search">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-star"></i> 收藏</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-history"></i> 历史</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-cog"></i> 设置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- 内容区域 -->
+                <div class="container mt-4">
+                    <h2 class="mb-4"><i class="fas fa-image me-2"></i>图片工具</h2>
+                    
+                    <!-- 图片工具列表 -->
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- 工具1：图片压缩 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-compress me-2"></i>图片压缩</h5>
+                                </div>
+                                <p>压缩图片大小，保持高质量，支持JPG、PNG等格式</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-compress.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具2：图片裁剪 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-crop me-2"></i>图片裁剪</h5>
+                                </div>
+                                <p>自由裁剪图片，调整大小，设置比例</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-crop.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具3：图片格式转换 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-exchange-alt me-2"></i>格式转换</h5>
+                                </div>
+                                <p>在JPG、PNG、WEBP、GIF等格式之间转换</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-convert.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具4：图片滤镜 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-magic me-2"></i>图片滤镜</h5>
+                                </div>
+                                <p>添加各种滤镜效果，调整亮度、对比度、饱和度等</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-filter.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具5：水印添加 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-stamp me-2"></i>水印添加</h5>
+                                </div>
+                                <p>为图片添加文字或图片水印，保护版权</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-watermark.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具6：图片拼接 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-object-group me-2"></i>图片拼接</h5>
+                                </div>
+                                <p>将多张图片拼接成一张，支持横向和纵向拼接</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/image-merge.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 图片压缩模态框 -->
+                <div class="modal fade" id="imageCompressModal" tabindex="-1" aria-labelledby="imageCompressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageCompressModalLabel">图片压缩</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="imageUpload" class="form-label">选择图片</label>
+                                    <input class="form-control" type="file" id="imageUpload" accept="image/*" multiple>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="compressionLevel" class="form-label">压缩级别: <span id="compressionValue">80%</span></label>
+                                    <input type="range" class="form-range" min="0" max="100" value="80" id="compressionLevel">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="preserveExif" checked>
+                                        <label class="form-check-label" for="preserveExif">
+                                            保留EXIF信息
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="image-preview-container text-center">
+                                    <p>预览区域</p>
+                                    <div class="image-preview bg-light p-3 rounded" style="min-height: 200px;">
+                                        <p class="text-muted">上传图片后在此处显示预览</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary">压缩</button>
+                                <button type="button" class="btn btn-success">下载</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 页脚 -->
+                <footer class="bg-light text-center text-lg-start mt-5">
+                    <div class="container p-4">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关于我们</h5>
+                                <p>我们致力于提供高质量、易用的在线工具，帮助用户提高工作效率和解决日常问题。</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">链接</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#" class="text-dark">使用条款</a></li>
+                                    <li><a href="#" class="text-dark">隐私政策</a></li>
+                                    <li><a href="#" class="text-dark">联系我们</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关注我们</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weixin me-2"></i>微信</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weibo me-2"></i>微博</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-github me-2"></i>GitHub</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+                        © 2023 在线工具集 - 版权所有
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

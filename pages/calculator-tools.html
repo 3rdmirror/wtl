@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算工具 - 在线工具集</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧导航栏 -->
+            <div class="col-md-2 bg-dark sidebar p-0">
+                <div class="text-center py-4">
+                    <h3 class="text-white">工具集</h3>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">
+                                <i class="fas fa-home"></i> 首页
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="text-tools.html">
+                                <i class="fas fa-font"></i> 文本工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="image-tools.html">
+                                <i class="fas fa-image"></i> 图片工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="conversion-tools.html">
+                                <i class="fas fa-exchange-alt"></i> 转换工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="calculator-tools.html">
+                                <i class="fas fa-calculator"></i> 计算工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="developer-tools.html">
+                                <i class="fas fa-code"></i> 开发者工具
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="col-md-10 main-content">
+                <!-- 顶部导航栏 -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        
+                        <!-- 搜索框 -->
+                        <div class="search-container mx-auto">
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="搜索工具..." aria-label="Search">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-star"></i> 收藏</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-history"></i> 历史</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-cog"></i> 设置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- 内容区域 -->
+                <div class="container mt-4">
+                    <h2 class="mb-4"><i class="fas fa-calculator me-2"></i>计算工具</h2>
+                    
+                    <!-- 计算工具列表 -->
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- 工具1：税金计算器 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-receipt me-2"></i>税金计算器</h5>
+                                </div>
+                                <p>计算含税/未税金额、税率，支持数字转中文大写功能</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/tax-calculator.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具2：合同款项计算器 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-file-contract me-2"></i>合同款项计算器</h5>
+                                </div>
+                                <p>计算合同款项、税额、分期付款，支持数字转中文大写功能</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/contract-calculator.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 这里可以添加更多计算工具 -->
+                    </div>
+                </div>
+                
+                <!-- 税金计算器模态框 -->
+                <div class="modal fade" id="taxCalculatorModal" tabindex="-1" aria-labelledby="taxCalculatorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="taxCalculatorModalLabel"><i class="fas fa-receipt me-2"></i>税金计算器</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- 计算模式选择 -->
+                                <div class="mb-4">
+                                    <label class="form-label">计算模式</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="calculationType" id="calcType1" value="includeTax" checked>
+                                        <label class="btn btn-outline-primary" for="calcType1">含税金额计算</label>
+                                        
+                                        <input type="radio" class="btn-check" name="calculationType" id="calcType2" value="excludeTax">
+                                        <label class="btn btn-outline-primary" for="calcType2">未税金额计算</label>
+                                        
+                                        <input type="radio" class="btn-check" name="calculationType" id="calcType3" value="taxRate">
+                                        <label class="btn btn-outline-primary" for="calcType3">税率计算</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- 计算表单 -->
+                                <div id="includeTaxForm">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="excludedAmount" class="form-label">未税金额</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="excludedAmount" step="0.01" min="0">
+                                                <span class="input-group-text">元</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="taxRate1" class="form-label">税率</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="taxRate1" step="1" min="0" max="100" value="13">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="excludeTaxForm" style="display: none;">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="includedAmount" class="form-label">含税金额</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="includedAmount" step="0.01" min="0">
+                                                <span class="input-group-text">元</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="taxRate2" class="form-label">税率</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="taxRate2" step="1" min="0" max="100" value="13">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="taxRateForm" style="display: none;">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="includedAmountForRate" class="form-label">含税金额</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="includedAmountForRate" step="0.01" min="0">
+                                                <span class="input-group-text">元</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="excludedAmountForRate" class="form-label">未税金额</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="excludedAmountForRate" step="0.01" min="0">
+                                                <span class="input-group-text">元</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 计算按钮 -->
+                                <div class="d-grid gap-2 mb-4">
+                                    <button class="btn btn-primary" id="calculateBtn">计算</button>
+                                </div>
+                                
+                                <!-- 计算结果 -->
+                                <div class="card mb-3" id="resultCard" style="display: none;">
+                                    <div class="card-header bg-primary text-white">
+                                        计算结果
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>未税金额：</strong> <span id="resultExcludedAmount">0.00</span> 元</p>
+                                                <p><strong>税额：</strong> <span id="resultTaxAmount">0.00</span> 元</p>
+                                                <p><strong>含税金额：</strong> <span id="resultIncludedAmount">0.00</span> 元</p>
+                                                <p><strong>税率：</strong> <span id="resultTaxRate">0.00</span> %</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>中文大写：</strong></p>
+                                                <p>未税金额：<span id="resultExcludedAmountChinese">零元整</span></p>
+                                                <p>税额：<span id="resultTaxAmountChinese">零元整</span></p>
+                                                <p>含税金额：<span id="resultIncludedAmountChinese">零元整</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 页脚 -->
+                <footer class="bg-light text-center text-lg-start mt-5">
+                    <div class="container p-4">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关于我们</h5>
+                                <p>我们致力于提供高质量、易用的在线工具，帮助用户提高工作效率和解决日常问题。</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">链接</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#" class="text-dark">使用条款</a></li>
+                                    <li><a href="#" class="text-dark">隐私政策</a></li>
+                                    <li><a href="#" class="text-dark">联系我们</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关注我们</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weixin me-2"></i>微信</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weibo me-2"></i>微博</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-github me-2"></i>GitHub</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+                        © 2023 在线工具集 - 版权所有
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script src="../js/main.js"></script>
+    <!-- 税金计算器JS -->
+    <script src="../js/tax-calculator.js"></script>
+</body>
+</html>

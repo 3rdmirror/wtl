@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在线工具集 - 您的一站式工具平台</title>
+    <title>在线文本编辑器 - 在线工具集</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- 自定义样式 -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -22,32 +22,32 @@
                 <div class="sidebar-menu">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="index.html">
+                            <a class="nav-link" href="../../index.html">
                                 <i class="fas fa-home"></i> 首页
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/text-tools.html">
+                            <a class="nav-link active" href="../text-tools.html">
                                 <i class="fas fa-font"></i> 文本工具
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/image-tools.html">
+                            <a class="nav-link" href="../image-tools.html">
                                 <i class="fas fa-image"></i> 图片工具
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/conversion-tools.html">
+                            <a class="nav-link" href="../conversion-tools.html">
                                 <i class="fas fa-exchange-alt"></i> 转换工具
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/calculator-tools.html">
+                            <a class="nav-link" href="../calculator-tools.html">
                                 <i class="fas fa-calculator"></i> 计算工具
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/developer-tools.html">
+                            <a class="nav-link" href="../developer-tools.html">
                                 <i class="fas fa-code"></i> 开发者工具
                             </a>
                         </li>
@@ -92,93 +92,37 @@
                 
                 <!-- 内容区域 -->
                 <div class="container mt-4">
-                    <!-- 欢迎横幅 -->
-                    <div class="jumbotron bg-light p-5 rounded mb-4">
-                        <h1 class="display-5">欢迎使用在线工具集</h1>
-                        <p class="lead">这里提供各种实用的在线工具，帮助您提高工作效率</p>
-                        <hr class="my-4">
-                        <p>从左侧菜单选择工具类别，或使用上方搜索框查找特定工具</p>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="fas fa-edit me-2"></i>在线文本编辑器</h2>
+                        <a href="../text-tools.html" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> 返回文本工具
+                        </a>
                     </div>
                     
-                    <!-- 热门工具 -->
-                    <h3 class="mb-4"><i class="fas fa-fire text-danger"></i> 热门工具</h3>
-                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                        <!-- 热门工具卡片 1 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <img src="https://images.unsplash.com/photo-1516131206008-dd041a9764fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="文本编辑器">
-                                <div class="card-body">
-                                    <h5 class="card-title">在线文本编辑器</h5>
-                                    <p class="card-text">强大的在线文本编辑工具，支持格式化、语法高亮等功能</p>
-                                    <a href="pages/text-tools.html" class="btn btn-primary">立即使用</a>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="btn-toolbar mb-2" role="toolbar">
+                                    <div class="btn-group me-2" role="group">
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-bold"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-italic"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-underline"></i></button>
+                                    </div>
+                                    <div class="btn-group me-2" role="group">
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-left"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-center"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-right"></i></button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-list-ul"></i></button>
+                                        <button type="button" class="btn btn-outline-secondary"><i class="fas fa-list-ol"></i></button>
+                                    </div>
                                 </div>
+                                <textarea class="form-control" id="textEditor" rows="15" style="font-family: monospace;"></textarea>
                             </div>
-                        </div>
-                        <!-- 热门工具卡片 2 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="图片压缩">
-                                <div class="card-body">
-                                    <h5 class="card-title">图片压缩工具</h5>
-                                    <p class="card-text">快速压缩图片大小，保持高质量，支持批量处理</p>
-                                    <a href="pages/image-tools.html" class="btn btn-primary">立即使用</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 热门工具卡片 3 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="JSON格式化">
-                                <div class="card-body">
-                                    <h5 class="card-title">JSON格式化工具</h5>
-                                    <p class="card-text">轻松格式化、验证和美化您的JSON数据</p>
-                                    <a href="pages/developer-tools.html" class="btn btn-primary">立即使用</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 最近更新 -->
-                    <h3 class="mb-4"><i class="fas fa-clock text-primary"></i> 最近更新</h3>
-                    <div class="row row-cols-1 row-cols-md-4 g-4">
-                        <!-- 最近更新工具 1 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">二维码生成器</h5>
-                                    <p class="card-text">快速生成自定义二维码，支持多种格式</p>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">查看</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 最近更新工具 2 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">PDF转Word</h5>
-                                    <p class="card-text">高质量PDF转Word转换工具</p>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">查看</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 最近更新工具 3 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">颜色选择器</h5>
-                                    <p class="card-text">专业的在线颜色选择和转换工具</p>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">查看</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 最近更新工具 4 -->
-                        <div class="col">
-                            <div class="card h-100 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">密码生成器</h5>
-                                    <p class="card-text">生成安全、强大的随机密码</p>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">查看</a>
-                                </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary me-2">保存</button>
+                                <button type="button" class="btn btn-success">下载</button>
                             </div>
                         </div>
                     </div>
@@ -221,6 +165,6 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- 自定义JS -->
-    <script src="js/main.js"></script>
+    <script src="../../js/main.js"></script>
 </body>
 </html>

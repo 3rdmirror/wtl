@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本工具 - 在线工具集</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧导航栏 -->
+            <div class="col-md-2 bg-dark sidebar p-0">
+                <div class="text-center py-4">
+                    <h3 class="text-white">工具集</h3>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">
+                                <i class="fas fa-home"></i> 首页
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="text-tools.html">
+                                <i class="fas fa-font"></i> 文本工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="image-tools.html">
+                                <i class="fas fa-image"></i> 图片工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="conversion-tools.html">
+                                <i class="fas fa-exchange-alt"></i> 转换工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="calculator-tools.html">
+                                <i class="fas fa-calculator"></i> 计算工具
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="developer-tools.html">
+                                <i class="fas fa-code"></i> 开发者工具
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="col-md-10 main-content">
+                <!-- 顶部导航栏 -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        
+                        <!-- 搜索框 -->
+                        <div class="search-container mx-auto">
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="搜索工具..." aria-label="Search">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-star"></i> 收藏</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-history"></i> 历史</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"><i class="fas fa-cog"></i> 设置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- 内容区域 -->
+                <div class="container mt-4">
+                    <h2 class="mb-4"><i class="fas fa-font me-2"></i>文本工具</h2>
+                    
+                    <!-- 文本工具列表 -->
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- 工具1：文本编辑器 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-edit me-2"></i>在线文本编辑器</h5>
+                                </div>
+                                <p>强大的在线文本编辑工具，支持格式化、语法高亮等功能</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-editor.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具2：文本对比 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-columns me-2"></i>文本对比工具</h5>
+                                </div>
+                                <p>比较两段文本之间的差异，高亮显示不同之处</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-compare.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具3：文本计数 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-calculator me-2"></i>文本计数工具</h5>
+                                </div>
+                                <p>统计文本中的字符数、单词数、行数等信息</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-count.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具4：大小写转换 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-text-height me-2"></i>大小写转换</h5>
+                                </div>
+                                <p>将文本转换为大写、小写或首字母大写等格式</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-case.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具5：文本加密解密 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-lock me-2"></i>文本加密解密</h5>
+                                </div>
+                                <p>使用多种加密算法对文本进行加密和解密</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-encrypt.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具6：文本排序 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-sort-alpha-down me-2"></i>文本排序</h5>
+                                </div>
+                                <p>按字母顺序或数字大小对文本行进行排序</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/text-sort.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 工具7：随机密码生成器 -->
+                        <div class="col">
+                            <div class="tool-container h-100">
+                                <div class="tool-header">
+                                    <h5><i class="fas fa-key me-2"></i>随机密码生成器</h5>
+                                </div>
+                                <p>生成安全、强大的随机密码</p>
+                                <div class="text-center mt-3">
+                                    <a href="tools/password-generator.html" class="btn btn-primary">
+                                        打开工具
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 文本编辑器模态框 -->
+                <div class="modal fade" id="textEditorModal" tabindex="-1" aria-labelledby="textEditorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="textEditorModalLabel">在线文本编辑器</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <div class="btn-toolbar mb-2" role="toolbar">
+                                        <div class="btn-group me-2" role="group">
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-bold"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-italic"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-underline"></i></button>
+                                        </div>
+                                        <div class="btn-group me-2" role="group">
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-left"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-center"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-align-right"></i></button>
+                                        </div>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-list-ul"></i></button>
+                                            <button type="button" class="btn btn-outline-secondary"><i class="fas fa-list-ol"></i></button>
+                                        </div>
+                                    </div>
+                                    <textarea class="form-control" id="textEditor" rows="15" style="font-family: monospace;"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-success">下载</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 页脚 -->
+                <footer class="bg-light text-center text-lg-start mt-5">
+                    <div class="container p-4">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关于我们</h5>
+                                <p>我们致力于提供高质量、易用的在线工具，帮助用户提高工作效率和解决日常问题。</p>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">链接</h5>
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#" class="text-dark">使用条款</a></li>
+                                    <li><a href="#" class="text-dark">隐私政策</a></li>
+                                    <li><a href="#" class="text-dark">联系我们</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                                <h5 class="text-uppercase">关注我们</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weixin me-2"></i>微信</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-weibo me-2"></i>微博</a></li>
+                                    <li><a href="#" class="text-dark"><i class="fab fa-github me-2"></i>GitHub</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+                        © 2023 在线工具集 - 版权所有
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 自定义JS -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

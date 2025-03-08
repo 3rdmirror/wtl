@@ -1,504 +1,386 @@
 /**
- * 数字金额转换为大写人民币
- * @param {number} money 金额
- * @returns {string} 大写金额
+ * 税金计算器功能
  */
-function convertToChinese(money) {
-    const cnNums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
-    const cnIntRadice = ['', '拾', '佰', '仟'];
-    const cnIntUnits = ['', '万', '亿', '兆'];
-    const cnDecUnits = ['角', '分'];
-    const cnInteger = '整';
-    const cnIntLast = '元';
-    
-    let integral = Math.floor(money);
-    let decimal = Math.round((money - integral) * 100);
-    let chineseStr = '';
-    
-    if (integral === 0) {
-        chineseStr = '零元';
-        if (decimal === 0) {
-            return chineseStr + cnInteger;
-        }
-    }
-    
-    let integerNum = integral.toString();
-    let decimalNum = decimal.toString().padStart(2, '0');
-    
-    // 处理整数部分
-    let zeroCount = 0;
-    let i = 0;
-    let p = integerNum.length - 1;
-    while (p >= 0) {
-        let d = parseInt(integerNum.substr(i, 1));
-        let quotient = p % 4;
-        if (d === 0) {
-            zeroCount++;
-        } else {
-            if (zeroCount > 0) {
-                chineseStr += cnNums[0];
-            }
-            zeroCount = 0;
-            chineseStr += cnNums[d] + cnIntRadice[quotient];
-        }
-        if (quotient === 0 && zeroCount < 4) {
-            chineseStr += cnIntUnits[Math.floor(p/4)];
-        }
-        p--;
-        i++;
-    }
-    chineseStr += cnIntLast;
-    
-    // 处理小数部分
-    if (decimal > 0) {
-        for (let i = 0; i < 2; i++) {
-            let d = parseInt(decimalNum.charAt(i));
-            if (d !== 0) {
-                chineseStr += cnNums[d] + cnDecUnits[i];
-            }
-        }
-    } else {
-        chineseStr += cnInteger;
-    }
-    
-    return chineseStr;
-}
 
-/**
- * 计算含税金额
- */
-function calculateWithTax() {
-    const amount = parseFloat(document.getElementById('amount1').value);
-    const rate = parseFloat(document.getElementById('rate1').value);
-    
-    if (isNaN(amount) || isNaN(rate)) {
-        alert('请输入有效数字！');
-        return;
-    }
-    
-    const tax = amount * (rate/100);
-    const result = amount + tax;
-    
-    // 显示结果表
-    document.getElementById('resultTable1').classList.remove('hidden');
-    
-    // 更新表格数据
-    document.getElementById('result1').textContent = `¥${result.toFixed(2)}`;
-    document.getElementById('result1Chinese').textContent = convertToChinese(result);
-    
-    document.getElementById('result1WithoutTax').textContent = `¥${amount.toFixed(2)}`;
-    document.getElementById('result1WithoutTaxChinese').textContent = convertToChinese(amount);
-    
-    document.getElementById('result1Tax').textContent = `¥${tax.toFixed(2)}`;
-    document.getElementById('result1TaxChinese').textContent = convertToChinese(tax);
-    
-    document.getElementById('result1Rate').textContent = rate + '%';
-    
-    // 更新文本显示
-    document.getElementById('textResult1').textContent = result.toFixed(2);
-    document.getElementById('textResult1Chinese').textContent = convertToChinese(result);
-    document.getElementById('textResult1WithoutTax').textContent = amount.toFixed(2);
-    document.getElementById('textResult1WithoutTaxChinese').textContent = convertToChinese(amount);
-    document.getElementById('textResult1Tax').textContent = tax.toFixed(2);
-    document.getElementById('textResult1TaxChinese').textContent = convertToChinese(tax);
-    document.getElementById('textResult1Rate').textContent = rate + '%';
-    
-    // 显示结果（根据当前选择的格式）
-    const format = document.querySelector('.display-btn.active').dataset.format;
-    updateDisplayFormat(format);
-}
-
-/**
- * 计算未含税金额
- */
-function calculateWithoutTax() {
-    const amount = parseFloat(document.getElementById('amount2').value);
-    const rate = parseFloat(document.getElementById('rate2').value);
-    
-    if (isNaN(amount) || isNaN(rate)) {
-        alert('请输入有效数字！');
-        return;
-    }
-    
-    const result = amount / (1 + rate/100);
-    const tax = amount - result;
-    
-    // 显示结果表
-    document.getElementById('resultTable2').classList.remove('hidden');
-    
-    // 更新表格数据
-    document.getElementById('result2WithTax').textContent = `¥${amount.toFixed(2)}`;
-    document.getElementById('result2WithTaxChinese').textContent = convertToChinese(amount);
-    
-    document.getElementById('result2').textContent = `¥${result.toFixed(2)}`;
-    document.getElementById('result2Chinese').textContent = convertToChinese(result);
-    
-    document.getElementById('result2Tax').textContent = `¥${tax.toFixed(2)}`;
-    document.getElementById('result2TaxChinese').textContent = convertToChinese(tax);
-    
-    document.getElementById('result2Rate').textContent = rate + '%';
-    
-    // 更新文本显示
-    document.getElementById('textResult2WithTax').textContent = amount.toFixed(2);
-    document.getElementById('textResult2WithTaxChinese').textContent = convertToChinese(amount);
-    document.getElementById('textResult2').textContent = result.toFixed(2);
-    document.getElementById('textResult2Chinese').textContent = convertToChinese(result);
-    document.getElementById('textResult2Tax').textContent = tax.toFixed(2);
-    document.getElementById('textResult2TaxChinese').textContent = convertToChinese(tax);
-    document.getElementById('textResult2Rate').textContent = rate + '%';
-    
-    // 显示结果（根据当前选择的格式）
-    const format = document.querySelector('.display-btn.active').dataset.format;
-    updateDisplayFormat(format);
-}
-
-/**
- * 计算税率
- */
-function calculateTaxRate() {
-    const withTax = parseFloat(document.getElementById('withTax').value);
-    const withoutTax = parseFloat(document.getElementById('withoutTax').value);
-    
-    if (isNaN(withTax) || isNaN(withoutTax)) {
-        alert('请输入有效数字！');
-        return;
-    }
-    
-    const rate = ((withTax / withoutTax) - 1) * 100;
-    document.getElementById('result3').textContent = rate.toFixed(2);
-}
-
-/**
- * 清除计算结果
- * @param {number} calculatorId 计算器编号
- */
-function clearResult(calculatorId) {
-    switch(calculatorId) {
-        case 1:
-            // 清除第一个计算器
-            document.getElementById('amount1').value = '';
-            document.getElementById('rate1').value = '6';
-            document.getElementById('resultTable1').classList.add('hidden');
-            break;
-            
-        case 2:
-            // 清除第二个计算器
-            document.getElementById('amount2').value = '';
-            document.getElementById('rate2').value = '6';
-            document.getElementById('resultTable2').classList.add('hidden');
-            break;
-            
-        case 3:
-            // 清除第三个计算器
-            document.getElementById('withTax').value = '';
-            document.getElementById('withoutTax').value = '';
-            document.getElementById('result3').textContent = '0.00';
-            break;
-    }
-    // 清除后更新本地存储
-    saveInputValues();
-}
-
-/**
- * 初始化键盘事件监听
- */
-function initKeyboardEvents() {
-    // 为每个计算器添加键盘事件监听
-    document.addEventListener('keydown', function(event) {
-        // 获取当前焦点所在的计算器区域
-        const activeElement = document.activeElement;
-        const calcSection = activeElement.closest('.calc-section');
-        
-        if (!calcSection) return;
-        
-        // 确定当前在哪个计算器
-        const sections = document.querySelectorAll('.calc-section');
-        const calculatorId = Array.from(sections).indexOf(calcSection) + 1;
-        
-        switch(event.key) {
-            case 'Enter':
-                // 阻止默认的表单提交行为
-                event.preventDefault();
-                // 触发对应的计算函数
-                switch(calculatorId) {
-                    case 1:
-                        calculateWithTax();
-                        break;
-                    case 2:
-                        calculateWithoutTax();
-                        break;
-                    case 3:
-                        calculateTaxRate();
-                        break;
-                }
-                break;
-                
-            case 'Escape':
-                // 触发清除功能
-                clearResult(calculatorId);
-                break;
-        }
-    });
-}
-
-/**
- * 保存输入值到本地存储
- */
-function saveInputValues() {
-    const inputValues = {
-        amount1: document.getElementById('amount1').value,
-        rate1: document.getElementById('rate1').value,
-        amount2: document.getElementById('amount2').value,
-        rate2: document.getElementById('rate2').value,
-        withTax: document.getElementById('withTax').value,
-        withoutTax: document.getElementById('withoutTax').value,
-        // 添加时间戳
-        timestamp: new Date().getTime()
-    };
-    localStorage.setItem('taxCalculatorInputs', JSON.stringify(inputValues));
-}
-
-/**
- * 从本地存储恢复输入值
- */
-function restoreInputValues() {
-    const savedValues = localStorage.getItem('taxCalculatorInputs');
-    if (savedValues) {
-        const inputValues = JSON.parse(savedValues);
-        
-        // 检查数据是否过期（24小时）
-        const now = new Date().getTime();
-        const oneDayInMs = 24 * 60 * 60 * 1000; // 一天的毫秒数
-        
-        if (now - inputValues.timestamp > oneDayInMs) {
-            // 数据已过期，清除存储
-            localStorage.removeItem('taxCalculatorInputs');
-            // 重置为默认值
-            resetToDefaults();
-            return;
-        }
-        
-        // 数据未过期，恢复输入值
-        document.getElementById('amount1').value = inputValues.amount1;
-        document.getElementById('rate1').value = inputValues.rate1;
-        document.getElementById('amount2').value = inputValues.amount2;
-        document.getElementById('rate2').value = inputValues.rate2;
-        document.getElementById('withTax').value = inputValues.withTax;
-        document.getElementById('withoutTax').value = inputValues.withoutTax;
-    }
-}
-
-/**
- * 重置为默认值
- */
-function resetToDefaults() {
-    document.getElementById('amount1').value = '';
-    document.getElementById('rate1').value = '6';
-    document.getElementById('amount2').value = '';
-    document.getElementById('rate2').value = '6';
-    document.getElementById('withTax').value = '';
-    document.getElementById('withoutTax').value = '';
-}
-
-/**
- * 为所有输入框添加保存事件
- */
-function initSaveEvents() {
-    const inputs = [
-        'amount1', 'rate1',
-        'amount2', 'rate2',
-        'withTax', 'withoutTax'
-    ];
-    
-    inputs.forEach(id => {
-        document.getElementById(id).addEventListener('input', saveInputValues);
-    });
-}
-
-// 添加格式切换功能
-function initDisplayOptions() {
-    const displayBtns = document.querySelectorAll('.display-btn');
-    displayBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // 更新按钮状态
-            displayBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // 更新显示格式
-            const format = this.dataset.format;
-            updateDisplayFormat(format);
-        });
-    });
-}
-
-function updateDisplayFormat(format) {
-    const tables = document.querySelectorAll('.result-table');
-    const texts = document.querySelectorAll('.result-text');
-    
-    if (format === 'table') {
-        tables.forEach(table => table.classList.remove('hidden'));
-        texts.forEach(text => text.classList.add('hidden'));
-    } else {
-        tables.forEach(table => table.classList.add('hidden'));
-        texts.forEach(text => text.classList.remove('hidden'));
-    }
-}
-
-// 添加复制功能
-function copyToClipboard(text) {
-    // 创建临时textarea
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    
-    try {
-        document.execCommand('copy');
-        // 显示提示
-        showCopyTip('复制成功！');
-    } catch (err) {
-        console.error('复制失败:', err);
-        showCopyTip('复制失败，请手动复制');
-    }
-    
-    document.body.removeChild(textarea);
-}
-
-// 显示复制提示
-function showCopyTip(message) {
-    const tip = document.createElement('div');
-    tip.className = 'copy-tip';
-    tip.textContent = message;
-    document.body.appendChild(tip);
-    
-    // 2秒后移除提示
-    setTimeout(() => {
-        tip.classList.add('fade-out');
-        setTimeout(() => document.body.removeChild(tip), 300);
-    }, 2000);
-}
-
-// 格式化表格数据为文本
-function formatTableToText(tableId) {
-    const table = document.getElementById(tableId);
-    let text = '';
-    
-    // 遍历表格行
-    table.querySelectorAll('tbody tr').forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 2) {
-            const label = cells[0].textContent;
-            const value = cells[1].textContent;
-            // 如果是税率，不添加人民币符号
-            if (label === '税率') {
-                text += `${label}：${value}`;
-            } else {
-                // 如果值已经包含人民币符号，就直接使用
-                text += `${label}：${value.startsWith('¥') ? value : '¥' + value}`;
-            }
-            if (cells.length > 2 && cells[2].textContent) {
-                text += `（${cells[2].textContent}）`;
-            }
-            text += '\n';
-        }
-    });
-    
-    return text.trim();
-}
-
-// 格式化文本显示数据
-function formatTextToClipboard(textId) {
-    const container = document.getElementById(textId);
-    return Array.from(container.querySelectorAll('.text-line'))
-        .map(line => line.textContent.trim())
-        .join('\n');
-}
-
-/**
- * 复制计算结果到剪贴板
- * @param {number} section - 计算区域编号
- */
-function copyResults(section) {
-    // 获取结果文本
-    const resultDiv = document.getElementById(`resultText${section}`);
-    const results = Array.from(resultDiv.getElementsByClassName('text-line'))
-        .map(p => p.textContent.trim())
-        .join('\n');
-    
-    // 创建临时文本区域
-    const textarea = document.createElement('textarea');
-    textarea.value = results;
-    document.body.appendChild(textarea);
-    
-    // 选择并复制文本
-    textarea.select();
-    document.execCommand('copy');
-    
-    // 移除临时文本区域
-    document.body.removeChild(textarea);
-    
-    // 显示复制成功提示
-    const copyBtn = resultDiv.querySelector('.copy-btn');
-    const originalText = copyBtn.textContent;
-    copyBtn.textContent = '复制成功！';
-    copyBtn.style.backgroundColor = '#4CAF50';
-    
-    // 2秒后恢复按钮原始状态
-    setTimeout(() => {
-        copyBtn.textContent = originalText;
-        copyBtn.style.backgroundColor = '';
-    }, 2000);
-}
-
-// 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
-    initKeyboardEvents();
-    restoreInputValues();
-    initSaveEvents();
-    initDisplayOptions();
+    // 获取DOM元素
+    const calcType1 = document.getElementById('calcType1');
+    const calcType2 = document.getElementById('calcType2');
+    const calcType3 = document.getElementById('calcType3');
+    const includeTaxForm = document.getElementById('includeTaxForm');
+    const excludeTaxForm = document.getElementById('excludeTaxForm');
+    const taxRateForm = document.getElementById('taxRateForm');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resultContainer = document.getElementById('resultContainer');
+    const copyTableBtn = document.getElementById('copyTableBtn');
     
-    // 为表格单元格添加点击复制功能
-    document.querySelectorAll('.result-table td').forEach(cell => {
-        cell.style.cursor = 'pointer';
-        cell.title = '点击复制';
-        cell.addEventListener('click', () => {
-            const isRate = cell.parentElement.firstElementChild.textContent === '税率';
-            const isChinese = cell.cellIndex === 2;
-            const text = cell.textContent;
-            const copyText = (!isRate && !isChinese && !text.startsWith('¥')) ? `¥${text}` : text;
-            copyToClipboard(copyText);
-        });
-    });
-    
-    // 为文本显示区域添加复制按钮
-    const resultTexts = document.querySelectorAll('.result-text');
-    resultTexts.forEach((text, index) => {
-        // 检查是否已经有复制按钮
-        if (!text.querySelector('.copy-btn')) {
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'copy-btn';
-            copyBtn.textContent = '复制结果';
-            copyBtn.onclick = () => copyResults(index + 1);
-            text.appendChild(copyBtn);
+    // 切换计算模式
+    calcType1.addEventListener('change', function() {
+        if(this.checked) {
+            includeTaxForm.style.display = 'block';
+            excludeTaxForm.style.display = 'none';
+            taxRateForm.style.display = 'none';
         }
     });
+    
+    calcType2.addEventListener('change', function() {
+        if(this.checked) {
+            includeTaxForm.style.display = 'none';
+            excludeTaxForm.style.display = 'block';
+            taxRateForm.style.display = 'none';
+        }
+    });
+    
+    calcType3.addEventListener('change', function() {
+        if(this.checked) {
+            includeTaxForm.style.display = 'none';
+            excludeTaxForm.style.display = 'none';
+            taxRateForm.style.display = 'block';
+        }
+    });
+    
+    // 计算按钮点击事件
+    calculateBtn.addEventListener('click', function() {
+        let excludedAmount = 0;
+        let includedAmount = 0;
+        let taxAmount = 0;
+        let taxRate = 0;
+        
+        // 根据选择的计算模式进行计算
+        if(calcType1.checked) {
+            // 含税金额计算
+            excludedAmount = parseFloat(document.getElementById('excludedAmount').value) || 0;
+            taxRate = parseFloat(document.getElementById('taxRate1').value) || 0;
+            
+            taxAmount = excludedAmount * (taxRate / 100);
+            includedAmount = excludedAmount + taxAmount;
+        } else if(calcType2.checked) {
+            // 未税金额计算
+            includedAmount = parseFloat(document.getElementById('includedAmount').value) || 0;
+            taxRate = parseFloat(document.getElementById('taxRate2').value) || 0;
+            
+            excludedAmount = includedAmount / (1 + taxRate / 100);
+            taxAmount = includedAmount - excludedAmount;
+        } else if(calcType3.checked) {
+            // 税率计算
+            includedAmount = parseFloat(document.getElementById('includedAmountForRate').value) || 0;
+            excludedAmount = parseFloat(document.getElementById('excludedAmountForRate').value) || 0;
+            
+            if(excludedAmount > 0 && includedAmount > excludedAmount) {
+                taxAmount = includedAmount - excludedAmount;
+                taxRate = (taxAmount / excludedAmount) * 100;
+            }
+        }
+        
+        // 显示结果
+        document.getElementById('resultExcludedAmount').textContent = excludedAmount.toFixed(2);
+        document.getElementById('resultTaxAmount').textContent = taxAmount.toFixed(2);
+        document.getElementById('resultIncludedAmount').textContent = includedAmount.toFixed(2);
+        document.getElementById('resultTaxRate').textContent = taxRate.toFixed(2);
+        
+        // 转换为中文大写
+        document.getElementById('resultIncludedCapital').textContent = numberToChinese(includedAmount);
+        document.getElementById('resultExcludedCapital').textContent = numberToChinese(excludedAmount);
+        document.getElementById('resultTaxCapital').textContent = numberToChinese(taxAmount);
+        document.getElementById('resultTaxRateCapital').textContent = taxRateToChinese(taxRate);
+        
+        // 显示结果容器
+        resultContainer.style.display = 'block';
+        
+        // 为结果表格中的所有数据单元格添加点击复制功能
+        setupCopyFunctionality();
+    });
+    
+    // 复制表格按钮点击事件
+    copyTableBtn.addEventListener('click', function() {
+        // 获取表格元素
+        const table = document.querySelector('#resultContainer table');
+        if (!table) return;
+        
+        // 创建一个数组来存储表格内容
+        let tableContent = [];
+        
+        // 获取表头
+        const headerRow = table.querySelector('thead tr');
+        if (headerRow) {
+            const headerCells = headerRow.querySelectorAll('th');
+            let headerTexts = [];
+            headerCells.forEach(cell => {
+                headerTexts.push(cell.textContent.trim());
+            });
+            tableContent.push(headerTexts.join('\t'));
+        }
+        
+        // 获取表格内容
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            let rowTexts = [];
+            cells.forEach(cell => {
+                rowTexts.push(cell.textContent.trim());
+            });
+            tableContent.push(rowTexts.join('\t'));
+        });
+        
+        // 将表格内容转换为文本
+        const tableText = tableContent.join('\n');
+        
+        // 复制到剪贴板
+        copyToClipboard(tableText);
+        
+        // 显示复制成功提示
+        showCopyTooltip(this);
+    });
+    
+    /**
+     * 设置点击复制功能
+     */
+    function setupCopyFunctionality() {
+        // 获取所有需要添加复制功能的元素
+        const copyElements = [
+            { id: 'resultIncludedAmount', prefix: '￥' },
+            { id: 'resultExcludedAmount', prefix: '￥' },
+            { id: 'resultTaxAmount', prefix: '￥' },
+            { id: 'resultTaxRate', suffix: '%' },
+            { id: 'resultIncludedCapital', prefix: '' },
+            { id: 'resultExcludedCapital', prefix: '' },
+            { id: 'resultTaxCapital', prefix: '' },
+            { id: 'resultTaxRateCapital', prefix: '' }
+        ];
+        
+        // 为每个元素添加点击事件
+        copyElements.forEach(element => {
+            const el = document.getElementById(element.id);
+            if (el) {
+                // 添加可复制的样式
+                el.classList.add('copyable');
+                
+                // 添加点击事件
+                el.addEventListener('click', function() {
+                    // 获取要复制的文本
+                    const textToCopy = (element.prefix || '') + this.textContent + (element.suffix || '');
+                    
+                    // 复制到剪贴板
+                    copyToClipboard(textToCopy);
+                    
+                    // 显示复制成功提示
+                    showCopyTooltip(this);
+                });
+            }
+        });
+        
+        // 为表格单元格的父元素也添加点击事件（更好的用户体验）
+        const resultRows = document.querySelectorAll('#resultContainer tbody tr');
+        resultRows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 2) {
+                cells[1].classList.add('copyable-cell');
+                cells[1].addEventListener('click', function() {
+                    const valueElement = this.querySelector('span');
+                    if (valueElement) {
+                        // 获取前缀（如￥）
+                        const prefix = this.textContent.trim().startsWith('￥') ? '￥' : '';
+                        // 获取后缀（如%）
+                        const suffix = this.textContent.trim().endsWith('%') ? '%' : '';
+                        
+                        // 获取要复制的文本
+                        const textToCopy = prefix + valueElement.textContent + suffix;
+                        
+                        // 复制到剪贴板
+                        copyToClipboard(textToCopy);
+                        
+                        // 显示复制成功提示
+                        showCopyTooltip(this);
+                    }
+                });
+                
+                cells[2].classList.add('copyable-cell');
+                cells[2].addEventListener('click', function() {
+                    // 获取要复制的文本
+                    const textToCopy = this.textContent;
+                    
+                    // 复制到剪贴板
+                    copyToClipboard(textToCopy);
+                    
+                    // 显示复制成功提示
+                    showCopyTooltip(this);
+                });
+            }
+        });
+    }
+    
+    /**
+     * 复制文本到剪贴板
+     * @param {string} text - 要复制的文本
+     */
+    function copyToClipboard(text) {
+        // 创建一个临时textarea元素
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        
+        // 选择文本并复制
+        textarea.select();
+        document.execCommand('copy');
+        
+        // 移除临时元素
+        document.body.removeChild(textarea);
+    }
+    
+    /**
+     * 显示复制成功提示
+     * @param {HTMLElement} element - 触发复制的元素
+     */
+    function showCopyTooltip(element) {
+        // 创建提示元素
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = '已复制';
+        
+        // 设置提示样式
+        tooltip.style.position = 'absolute';
+        tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        tooltip.style.color = '#fff';
+        tooltip.style.padding = '5px 10px';
+        tooltip.style.borderRadius = '3px';
+        tooltip.style.fontSize = '12px';
+        tooltip.style.zIndex = '1000';
+        
+        // 添加到文档中
+        document.body.appendChild(tooltip);
+        
+        // 计算位置
+        const rect = element.getBoundingClientRect();
+        tooltip.style.top = (rect.top - tooltip.offsetHeight - 5) + 'px';
+        tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+        
+        // 显示提示
+        tooltip.style.opacity = '1';
+        
+        // 设置淡出动画
+        setTimeout(() => {
+            tooltip.style.transition = 'opacity 0.5s';
+            tooltip.style.opacity = '0';
+            
+            // 移除提示元素
+            setTimeout(() => {
+                document.body.removeChild(tooltip);
+            }, 500);
+        }, 1500);
+    }
 });
 
-// 添加样式
-const style = document.createElement('style');
-style.textContent = `
-    .copy-btn {
-        padding: 6px 12px;
-        background-color: #2196F3;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-top: 10px;
+/**
+ * 数字转中文大写
+ * @param {number} num - 要转换的数字
+ * @returns {string} - 中文大写结果
+ */
+function numberToChinese(num) {
+    if (isNaN(num) || num === 0) return '零元整';
+    
+    // 将数字转为字符串，并分割整数和小数部分
+    const parts = num.toFixed(2).toString().split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    
+    // 中文数字
+    const cnNums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+    // 中文单位（个位到亿位）
+    const cnIntUnits = ['', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿', '拾'];
+    // 中文小数单位
+    const cnDecUnits = ['角', '分'];
+    // 整数部分结果
+    let integerResult = '';
+    // 小数部分结果
+    let decimalResult = '';
+    
+    // 处理整数部分
+    const integerLength = integerPart.length;
+    for (let i = 0; i < integerLength; i++) {
+        const digit = parseInt(integerPart[i]);
+        const unit = cnIntUnits[integerLength - 1 - i];
+        
+        if (digit !== 0) {
+            integerResult += cnNums[digit] + unit;
+        } else {
+            // 处理连续的零
+            if (i > 0 && parseInt(integerPart[i - 1]) !== 0) {
+                integerResult += cnNums[digit];
+            }
+            // 处理万位和亿位
+            if (unit === '万' || unit === '亿') {
+                integerResult += unit;
+            }
+        }
     }
-    .copy-btn:hover {
-        background-color: #1976D2;
+    
+    // 处理小数部分
+    for (let i = 0; i < 2; i++) {
+        const digit = parseInt(decimalPart[i]);
+        if (digit !== 0) {
+            decimalResult += cnNums[digit] + cnDecUnits[i];
+        }
     }
-`;
-document.head.appendChild(style); 
+    
+    // 组合结果
+    let result = '';
+    if (integerResult) {
+        result += integerResult + '元';
+    }
+    
+    if (decimalResult) {
+        result += decimalResult;
+    } else {
+        result += '整';
+    }
+    
+    return result;
+}
+
+/**
+ * 税率转中文大写
+ * @param {number} rate - 要转换的税率
+ * @returns {string} - 中文大写结果
+ */
+function taxRateToChinese(rate) {
+    if (isNaN(rate) || rate === 0) return '百分之零';
+    
+    // 将税率转为字符串，并分割整数和小数部分
+    const parts = rate.toFixed(2).toString().split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    
+    // 中文数字
+    const cnNums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+    
+    // 处理整数部分
+    let integerResult = '';
+    for (let i = 0; i < integerPart.length; i++) {
+        const digit = parseInt(integerPart[i]);
+        if (integerPart.length === 1 || (i === 0 && digit !== 0)) {
+            integerResult += cnNums[digit];
+        } else if (digit !== 0) {
+            if (i === 1) {
+                integerResult += '拾' + cnNums[digit];
+            } else {
+                integerResult += cnNums[digit];
+            }
+        }
+    }
+    
+    // 处理小数部分，只有当小数部分不是'00'时才显示
+    let decimalResult = '';
+    if (decimalPart !== '00') {
+        if (decimalPart[0] !== '0') {
+            decimalResult += '点' + cnNums[parseInt(decimalPart[0])];
+        }
+        if (decimalPart[1] !== '0') {
+            decimalResult += cnNums[parseInt(decimalPart[1])];
+        }
+    }
+    
+    return '百分之' + integerResult + decimalResult;
+}

@@ -1,544 +1,311 @@
-/**
- * 初始化合同计算器
- */
-function initContractCalculator() {
-    // 绑定计算按钮事件
-    document.querySelector('#contract-calculator button[onclick="calculateContractPayments()"]')
-        .addEventListener('click', calculateContractPayments);
-    
-    // 绑定清除按钮事件
-    document.querySelector('#contract-calculator button.clear-btn')
-        .addEventListener('click', clearContractResult);
-    
-    // 监听付款次数变化
-    document.getElementById('paymentCount').addEventListener('change', function() {
-        initPaymentRatios(parseInt(this.value));
-    });
-    
-    // 添加合同总金额变化监听
-    document.getElementById('totalAmount').addEventListener('input', saveContractAmount);
-}
+// 合同款项计算器脚本
 
-/**
- * 保存合同总金额到 sessionStorage
- */
-function saveContractAmount() {
-    const amount = document.getElementById('totalAmount').value;
-    if (amount) {
-        sessionStorage.setItem('contractAmount', amount);
-    }
-}
-
-/**
- * 从 sessionStorage 恢复合同总金额
- */
-function restoreContractAmount() {
-    const amount = sessionStorage.getItem('contractAmount');
-    if (amount) {
-        document.getElementById('totalAmount').value = amount;
-    }
-}
-
-/**
- * 初始化合同总金额保存事件
- */
-function initContractAmountSave() {
-    document.getElementById('totalAmount').addEventListener('input', saveContractAmount);
-}
-
-/**
- * 初始化付款比例输入框
- * @param {number} count - 付款次数
- */
-function initPaymentRatios(count) {
-    const container = document.getElementById('ratioInputs');
-    container.innerHTML = ''; // 清空现有输入框
+// 页面加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取DOM元素
+    const contractAmountInput = document.getElementById('contractAmount');
+    const taxRateInput = document.getElementById('taxRate');
+    const paymentTimesInput = document.getElementById('paymentTimes');
+    const paymentRatioContainer = document.getElementById('paymentRatioContainer');
+    const paymentRatiosContainer = document.getElementById('paymentRatios');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultCard = document.getElementById('resultCard');
+    const resultTableBody = document.getElementById('resultTableBody');
+    const copyTableBtn = document.getElementById('copyTableBtn');
+    const exportExcelBtn = document.getElementById('exportExcelBtn');
     
-    // 默认比例设置
-    const defaultRatios = [40, 50, 10];
-    let remainingRatio = 100;
+    // 初始化付款比例输入框
+    updatePaymentRatios();
     
-    for (let i = 0; i < count; i++) {
-        const div = document.createElement('div');
-        div.className = 'ratio-input-group';
+    // 监听付款次数变化，动态更新付款比例输入框
+    paymentTimesInput.addEventListener('change', updatePaymentRatios);
+    
+    // 计算按钮点击事件
+    calculateBtn.addEventListener('click', calculatePayments);
+    
+    // 重置按钮点击事件
+    resetBtn.addEventListener('click', resetForm);
+    
+    // 复制表格按钮点击事件
+    copyTableBtn.addEventListener('click', copyTableToClipboard);
+    
+    // 导出Excel按钮点击事件
+    exportExcelBtn.addEventListener('click', exportTableToExcel);
+    
+    // 更新付款比例输入框
+    function updatePaymentRatios() {
+        const paymentTimes = parseInt(paymentTimesInput.value) || 1;
         
-        const label = document.createElement('label');
-        label.textContent = `第${i + 1}期付款比例(%):`;
+        // 清空容器
+        paymentRatiosContainer.innerHTML = '';
         
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.min = '0';
-        input.max = '100';
-        input.step = '0.01';
-        input.className = 'ratio-input';
-        // 设置默认值
-        input.value = i < defaultRatios.length ? defaultRatios[i] : 0;
-        
-        // 添加输入事件监听
-        input.addEventListener('input', function() {
-            updateRatios(this);
-        });
-        
-        div.appendChild(label);
-        div.appendChild(input);
-        container.appendChild(div);
-    }
-}
-
-/**
- * 更新付款比例
- * @param {HTMLInputElement} changedInput - 被修改的输入框
- */
-function updateRatios(changedInput) {
-    const inputs = document.querySelectorAll('.ratio-input');
-    const inputsArray = Array.from(inputs);
-    const lastInput = inputs[inputs.length - 1];
-    
-    // 如果修改的不是最后一个输入框
-    if (changedInput !== lastInput) {
-        let total = 0;
-        // 计算除最后一个以外的所有比例之和
-        inputsArray.forEach((input, index) => {
-            if (index !== inputs.length - 1) {
-                total += parseFloat(input.value || 0);
+        // 创建新的输入框
+        for (let i = 1; i <= paymentTimes; i++) {
+            const colDiv = document.createElement('div');
+            colDiv.className = 'col-md-4';
+            
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+            
+            const span = document.createElement('span');
+            span.className = 'input-group-text';
+            span.textContent = `第${i}期付款比例(%)：`;
+            
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.className = 'form-control payment-ratio';
+            
+            // 设置默认值
+            if (i === 1 && paymentTimes === 1) {
+                input.value = '100';
+            } else if (i === 1) {
+                input.value = '40';
+            } else if (i === 2 && paymentTimes === 2) {
+                input.value = '60';
+            } else if (i === 2) {
+                input.value = '50';
+            } else if (i === 3) {
+                input.value = '10';
+            } else {
+                input.value = '0';
             }
-        });
+            
+            inputGroup.appendChild(span);
+            inputGroup.appendChild(input);
+            colDiv.appendChild(inputGroup);
+            paymentRatiosContainer.appendChild(colDiv);
+        }
+    }
+    
+    // 计算付款金额
+    function calculatePayments() {
+        // 获取输入值
+        const contractAmount = parseFloat(contractAmountInput.value) || 0;
+        const taxRate = parseFloat(taxRateInput.value) || 0;
+        const paymentTimes = parseInt(paymentTimesInput.value) || 1;
         
-        // 设置最后一个输入框的值为剩余比例
-        const remaining = Math.max(0, 100 - total);
-        lastInput.value = remaining.toFixed(2);
-    }
-    
-    // 验证总和是否等于100%
-    let total = 0;
-    inputsArray.forEach(input => {
-        total += parseFloat(input.value || 0);
-    });
-    
-    // 如果总和不等于100%，显示警告
-    const warningElement = document.getElementById('ratioWarning') || createWarningElement();
-    if (Math.abs(total - 100) > 0.01) {
-        warningElement.textContent = `警告：当前付款比例总和为${total.toFixed(2)}%，应等于100%`;
-        warningElement.style.display = 'block';
-    } else {
-        warningElement.style.display = 'none';
-    }
-}
-
-/**
- * 创建警告提示元素
- */
-function createWarningElement() {
-    const warning = document.createElement('div');
-    warning.id = 'ratioWarning';
-    warning.style.color = 'red';
-    warning.style.marginTop = '10px';
-    document.getElementById('ratioInputs').appendChild(warning);
-    return warning;
-}
-
-/**
- * 更新比例输入框
- */
-function updateRatioInputs() {
-    const count = parseInt(document.getElementById('paymentCount').value) || 3;
-    const container = document.getElementById('ratioInputs');
-    container.innerHTML = '';
-    
-    for (let i = 1; i <= count; i++) {
-        const div = document.createElement('div');
-        div.className = 'ratio-input';
-        div.innerHTML = `
-            <label for="ratio${i}">第${i}期比例(%)：</label>
-            <input type="number" id="ratio${i}" min="0" max="100" step="1" value="${i === count ? '' : '30'}">
-        `;
-        container.appendChild(div);
-    }
-}
-
-/**
- * 计算合同付款
- */
-function calculateContractPayments() {
-    const totalAmount = parseFloat(document.getElementById('totalAmount').value);
-    const taxRate = parseFloat(document.getElementById('contractTaxRate').value);
-    
-    if (isNaN(totalAmount) || totalAmount <= 0) {
-        alert('请输入有效的合同金额！');
-        return;
-    }
-    
-    if (isNaN(taxRate) || taxRate < 0) {
-        alert('请输入有效的税率！');
-        return;
-    }
-    
-    // 获取付款比例
-    const ratioInputs = document.querySelectorAll('.ratio-input');
-    const ratios = Array.from(ratioInputs).map(input => parseFloat(input.value) || 0);
-    
-    // 验证比例总和
-    const totalRatio = ratios.reduce((sum, ratio) => sum + ratio, 0);
-    if (Math.abs(totalRatio - 100) > 0.01) {
-        // 如果所有输入框都为空或0，不显示警告
-        const allEmpty = ratios.every(ratio => ratio === 0);
-        if (!allEmpty) {
-            alert('付款比例之和必须等于100%！');
+        // 获取所有付款比例
+        const ratioInputs = document.querySelectorAll('.payment-ratio');
+        const ratios = [];
+        let totalRatio = 0;
+        
+        for (let i = 0; i < ratioInputs.length; i++) {
+            const ratio = parseFloat(ratioInputs[i].value) || 0;
+            ratios.push(ratio);
+            totalRatio += ratio;
+        }
+        
+        // 验证比例总和是否为100%
+        if (Math.abs(totalRatio - 100) > 0.01) {
+            alert('付款比例总和必须为100%！');
             return;
         }
+        
+        // 清空结果表格
+        resultTableBody.innerHTML = '';
+        
+        // 添加合同总额行
+        const taxAmount = contractAmount * taxRate / 100;
+        const pretaxAmount = contractAmount - taxAmount;
+        
+        addResultRow('合同总额', '100%', contractAmount, taxAmount, pretaxAmount, numberToChinese(contractAmount));
+        
+        // 添加各期付款行
+        for (let i = 0; i < ratios.length; i++) {
+            const ratio = ratios[i];
+            const amount = contractAmount * ratio / 100;
+            const tax = amount * taxRate / 100;
+            const pretax = amount - tax;
+            
+            addResultRow(`第${i+1}期付款`, `${ratio}%`, amount, tax, pretax, numberToChinese(amount));
+        }
+        
+        // 显示结果卡片
+        resultCard.style.display = 'block';
     }
     
-    // 计算含税和未税金额
-    const withoutTaxAmount = totalAmount / (1 + taxRate/100);
-    const taxAmount = totalAmount - withoutTaxAmount;
-    
-    // 生成结果
-    const tbody = document.getElementById('paymentResults');
-    tbody.innerHTML = '';
-    
-    // 添加合同总额信息
-    const totalRow = tbody.insertRow();
-    totalRow.innerHTML = `
-        <td>合同总额</td>
-        <td>100%</td>
-        <td>¥${totalAmount.toFixed(2)}</td>
-        <td>¥${taxAmount.toFixed(2)}</td>
-        <td>¥${withoutTaxAmount.toFixed(2)}</td>
-        <td>${convertToChinese(totalAmount)}</td>
-    `;
-    
-    // 添加各期付款信息
-    ratios.forEach((ratio, index) => {
-        const amount = (totalAmount * ratio / 100);
-        const periodTax = amount - (amount / (1 + taxRate/100));
-        const periodWithoutTax = amount - periodTax;
+    // 添加结果行
+    function addResultRow(stage, ratio, amount, tax, pretax, chinese) {
+        const row = document.createElement('tr');
         
-        const row = tbody.insertRow();
+        // 添加单元格
         row.innerHTML = `
-            <td>第${index + 1}期付款</td>
-            <td>${ratio}%</td>
-            <td>¥${amount.toFixed(2)}</td>
-            <td>¥${periodTax.toFixed(2)}</td>
-            <td>¥${periodWithoutTax.toFixed(2)}</td>
-            <td>${convertToChinese(amount)}</td>
+            <td>${stage}</td>
+            <td>${ratio}</td>
+            <td class="copyable-cell">¥${amount.toFixed(2)}</td>
+            <td class="copyable-cell">¥${tax.toFixed(2)}</td>
+            <td class="copyable-cell">¥${pretax.toFixed(2)}</td>
+            <td class="copyable-cell">${chinese}</td>
         `;
-    });
-    
-    // 显示结果表格
-    document.getElementById('contractResultTable').classList.remove('hidden');
-    
-    // 为新生成的表格添加复制功能
-    const allCells = tbody.querySelectorAll('td');
-    allCells.forEach(cell => {
-        cell.style.cursor = 'pointer';
-        cell.title = '点击复制';
-        cell.addEventListener('click', () => {
-            const isRate = cell.parentElement.firstElementChild.textContent === '税率';
-            const isChinese = cell.cellIndex === 5; // 第6列是大写金额
-            const text = cell.textContent;
-            let copyText;
-            
-            // 处理不同类型的内容
-            if (text.includes('%')) {
-                copyText = text; // 百分比直接复制
-            } else if (isChinese) {
-                copyText = text; // 大写金额直接复制
-            } else if (text.startsWith('第') || text === '合同总额') {
-                copyText = text; // 标题直接复制
-            } else if (!text.startsWith('¥')) {
-                copyText = `¥${text}`; // 添加人民币符号
-            } else {
-                copyText = text; // 其他情况直接复制
-            }
-            
-            copyToClipboard(copyText);
-            
-            // 创建并显示"已复制"提示
-            const tooltip = document.createElement('div');
-            tooltip.textContent = '已复制';
-            tooltip.style.cssText = `
-                position: fixed;
-                background: rgba(33, 150, 243, 0.9);
-                color: white;
-                padding: 4px 8px;
-                border-radius: 4px;
-                font-size: 12px;
-                pointer-events: none;
-                z-index: 1000;
-            `;
-            
-            // 计算提示框位置
-            const rect = cell.getBoundingClientRect();
-            tooltip.style.left = rect.left + (rect.width / 2) - 20 + 'px';
-            tooltip.style.top = rect.top - 25 + 'px';
-            
-            document.body.appendChild(tooltip);
-            
-            // 显示复制成功的视觉反馈
-            const originalBg = cell.style.backgroundColor;
-            const originalColor = cell.style.color;
-            cell.style.backgroundColor = '#2196F3'; // 使用蓝色
-            cell.style.color = 'white';
-            
-            // 200ms后恢复单元格样式，500ms后移除提示框
-            setTimeout(() => {
-                cell.style.backgroundColor = originalBg;
-                cell.style.color = originalColor;
-            }, 200);
-            
-            setTimeout(() => {
-                tooltip.style.opacity = '0';
-                tooltip.style.transition = 'opacity 0.2s';
-                setTimeout(() => document.body.removeChild(tooltip), 200);
-            }, 500);
-        });
-    });
-}
-
-/**
- * 清除合同计算结果
- */
-function clearContractResult() {
-    // 清除输入值
-    document.getElementById('totalAmount').value = '';
-    document.getElementById('contractTaxRate').value = '6';
-    document.getElementById('paymentCount').value = '3';
-    
-    // 清除 sessionStorage 中的合同总金额
-    sessionStorage.removeItem('contractAmount');
-    
-    // 重置付款比例为默认值
-    initPaymentRatios(3); // 使用默认的3期付款，比例为40%、50%、10%
-    
-    // 隐藏结果表格
-    const resultTable = document.getElementById('contractResultTable');
-    resultTable.classList.add('hidden');
-    resultTable.previousElementSibling?.classList?.add('hidden');
-}
-
-/**
- * 初始化导航事件
- */
-function initNavigationEvents() {
-    document.querySelectorAll('.nav-item a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            
-            // 更新导航状态
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+        
+        resultTableBody.appendChild(row);
+        
+        // 为可复制单元格添加点击事件
+        const copyableCells = row.querySelectorAll('.copyable-cell');
+        copyableCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                copyTextToClipboard(this.textContent);
+                showCopyTooltip(this);
             });
-            this.parentElement.classList.add('active');
-            
-            // 切换计算器显示
-            document.querySelectorAll('.calculator-container').forEach(container => {
-                container.classList.add('hidden');
-            });
-            document.getElementById(targetId).classList.remove('hidden');
         });
-    });
-}
-
-/**
- * 复制表格全部内容
- */
-function copyTableContent() {
-    const table = document.getElementById('contractResultTable');
-    const thead = table.getElementsByTagName('thead')[0];
-    const tbody = document.getElementById('paymentResults');
-    let text = '';
-    
-    // 添加表头
-    const headers = thead.getElementsByTagName('th');
-    const headerTexts = [];
-    for (let i = 0; i < headers.length; i++) {
-        headerTexts.push(headers[i].textContent);
-    }
-    text += headerTexts.join('\t') + '\n';
-    
-    // 添加分隔线
-    text += headerTexts.map(() => '-'.repeat(20)).join('\t') + '\n';
-    
-    // 获取所有行
-    const rows = tbody.getElementsByTagName('tr');
-    
-    // 遍历每一行
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        const cellTexts = [];
-        
-        // 跳过分割线
-        if (cells[0].getAttribute('colspan')) {
-            continue;
-        }
-        
-        // 遍历每个单元格
-        for (let j = 0; j < cells.length; j++) {
-            const cell = cells[j];
-            // 如果单元格跨列，跳过
-            if (cell.getAttribute('colspan')) {
-                cellTexts.push('-');
-                continue;
-            }
-            // 处理不同类型的内容
-            const text = cell.textContent;
-            if (text.includes('%')) {
-                cellTexts.push(text);
-            } else if (j === cells.length - 1) {  // 最后一列是大写金额
-                cellTexts.push(text);
-            } else if (!text.startsWith('¥') && !text.includes('税率') && !isNaN(text)) {
-                cellTexts.push(`¥${text}`);
-            } else {
-                cellTexts.push(text);
-            }
-        }
-        
-        // 将单元格文本组合成一行，使用制表符分隔
-        text += cellTexts.join('\t') + '\n';
     }
     
-    // 复制到剪贴板
-    copyToClipboard(text);
-}
-
-/**
- * 复制表格文本内容
- */
-function copyTableTextContent() {
-    const tbody = document.getElementById('paymentResults');
-    let text = '';
-    
-    // 获取所有行
-    const rows = tbody.getElementsByTagName('tr');
-    
-    // 遍历每一行
-    for (let i = 0; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        
-        // 跳过分割线
-        if (cells[0].getAttribute('colspan')) {
-            continue;
-        }
-        
-        // 获取所有列的内容
-        const stage = cells[0].textContent;
-        const ratio = cells[1].textContent;
-        const amount = cells[2] ? cells[2].textContent : '';
-        const tax = cells[3] ? cells[3].textContent : '';
-        const withoutTax = cells[4] ? cells[4].textContent : '';
-        const chinese = cells[5] ? cells[5].textContent : '';
-        
-        // 如果是合同总额行
-        if (stage === '合同总额') {
-            text += `${stage}：${amount}（${chinese}）\n`;
-            // 获取税率
-            const taxRate = document.getElementById('contractTaxRate').value;
-            text += `税率：${taxRate}%\n`;
-            text += `税额：${tax}\n`;
-            text += `未税金额：${withoutTax}\n\n`;
-            continue;
-        }
-        
-        // 付款信息
-        if (stage.includes('期付款')) {
-            text += `${stage}：${amount}（${chinese}）\n`;
-            text += `付款比例：${ratio}\n`;
-            text += `  税额：${tax}\n`;
-            text += `  未税金额：${withoutTax}\n`;
-            if (i < rows.length - 1) {
-                text += '\n'; // 在每期付款信息之间添加空行，除了最后一期
-            }
-        }
+    // 重置表单
+    function resetForm() {
+        contractAmountInput.value = '1000000';
+        taxRateInput.value = '6';
+        paymentTimesInput.value = '3';
+        updatePaymentRatios();
+        resultCard.style.display = 'none';
     }
     
-    // 复制到剪贴板并显示复制成功提示
-    copyToClipboard(text.trim());
-    
-    // 创建并显示"已复制"提示
-    const button = document.querySelector('.copy-btn');
-    const tooltip = document.createElement('div');
-    tooltip.textContent = '已复制';
-    tooltip.style.cssText = `
-        position: fixed;
-        background: rgba(33, 150, 243, 0.9);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        pointer-events: none;
-        z-index: 1000;
-    `;
-    
-    // 计算提示框位置
-    const rect = button.getBoundingClientRect();
-    tooltip.style.left = rect.left + (rect.width / 2) - 20 + 'px';
-    tooltip.style.top = rect.top - 25 + 'px';
-    
-    document.body.appendChild(tooltip);
-    
-    // 显示复制成功的视觉反馈
-    button.style.backgroundColor = '#2196F3';
-    
-    // 200ms后恢复按钮样式，500ms后移除提示框
-    setTimeout(() => {
-        button.style.backgroundColor = '';
-    }, 200);
-    
-    setTimeout(() => {
-        tooltip.style.opacity = '0';
-        tooltip.style.transition = 'opacity 0.2s';
-        setTimeout(() => document.body.removeChild(tooltip), 200);
-    }, 500);
-}
-
-/**
- * 复制内容到剪贴板
- * @param {string} text - 要复制的文本
- */
-function copyToClipboard(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    
-    try {
+    // 复制文本到剪贴板
+    function copyTextToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
         document.execCommand('copy');
-        // 可以添加一个提示，比如：
-        console.log('复制成功：', text);
-    } catch (err) {
-        console.error('复制失败:', err);
+        document.body.removeChild(textarea);
     }
     
-    document.body.removeChild(textarea);
+    // 显示复制提示
+    function showCopyTooltip(element) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = '已复制';
+        
+        // 计算位置
+        const rect = element.getBoundingClientRect();
+        tooltip.style.top = `${rect.top - 30}px`;
+        tooltip.style.left = `${rect.left + rect.width / 2}px`;
+        tooltip.style.transform = 'translateX(-50%)';
+        
+        document.body.appendChild(tooltip);
+        
+        // 2秒后移除提示
+        setTimeout(() => {
+            document.body.removeChild(tooltip);
+        }, 2000);
+    }
+    
+    // 复制表格到剪贴板
+    function copyTableToClipboard() {
+        const table = document.querySelector('.table');
+        const range = document.createRange();
+        range.selectNode(table);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        
+        alert('表格已复制到剪贴板');
+    }
+    
+    // 导出表格到Excel
+    function exportTableToExcel() {
+        const table = document.querySelector('.table');
+        const html = table.outerHTML;
+        const url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(html);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = '合同款项计算结果.xls';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+});
+
+// 数字转中文大写函数
+function numberToChinese(num) {
+    if (isNaN(num)) return "";
+    
+    const fraction = ['角', '分'];
+    const digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+    const unit = [
+        ['元', '万', '亿'],
+        ['', '拾', '佰', '仟']
+    ];
+    
+    let head = num < 0 ? '负' : '';
+    num = Math.abs(num);
+    
+    let s = '';
+    
+    // 处理小数部分
+    let decimalPart = '';
+    if (num.toString().indexOf('.') > 0) {
+        let decimalStr = num.toString().split('.')[1];
+        if (decimalStr.length > 2) {
+            decimalStr = decimalStr.substring(0, 2);
+        }
+        
+        for (let i = 0; i < decimalStr.length; i++) {
+            if (decimalStr[i] !== '0') {
+                decimalPart += digit[parseInt(decimalStr[i])] + fraction[i];
+            }
+        }
+    }
+    
+    // 处理整数部分
+    num = Math.floor(num);
+    if (num === 0) {
+        s = '零元';
+    } else {
+        let unitPos = 0;
+        let strIns = '';
+        let needZero = false;
+        
+        while (num > 0) {
+            let section = num % 10000;
+            if (needZero) {
+                strIns = '零' + strIns;
+            }
+            strIns = sectionToChinese(section, unit[0][unitPos], unit[1]) + strIns;
+            needZero = (section < 1000) && (section > 0);
+            num = Math.floor(num / 10000);
+            unitPos++;
+        }
+        s = strIns;
+    }
+    
+    // 如果没有小数部分，添加"整"
+    if (decimalPart === '') {
+        s += "整";
+    } else {
+        s += decimalPart;
+    }
+    
+    return head + s;
 }
 
-// 修改页面加载初始化部分
-document.addEventListener('DOMContentLoaded', function() {
-    // 初始化导航功能
-    initNavigationEvents();
+// 处理每个4位数段
+function sectionToChinese(section, unitItem, units) {
+    // 定义数字对应的中文
+    const digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+    let strIns = '';
+    let zero = true;
+    let pos = 0;
     
-    // 初始化合同计算器
-    initContractCalculator();
+    while (section > 0) {
+        let v = section % 10;
+        if (v === 0) {
+            if (!zero) {
+                zero = true;
+                strIns = digit[v] + strIns;
+            }
+        } else {
+            zero = false;
+            strIns = digit[v] + (units[pos] || '') + strIns;
+        }
+        pos++;
+        section = Math.floor(section / 10);
+    }
     
-    // 初始化默认3期付款
-    const defaultCount = 3;
-    document.getElementById('paymentCount').value = defaultCount;
-    initPaymentRatios(defaultCount);
+    if (strIns !== '') {
+        strIns += unitItem;
+    }
     
-    // 恢复上次输入的合同总金额
-    restoreContractAmount();
-    
-    // 初始化复制功能
-    document.querySelectorAll('.result-table td').forEach(cell => {
-        cell.style.cursor = 'pointer';
-        cell.title = '点击复制';
-        cell.addEventListener('click', () => {
-            const isRate = cell.parentElement.firstElementChild.textContent === '税率';
-            const isChinese = cell.cellIndex === 2;
-            const text = cell.textContent;
-            const copyText = (!isRate && !isChinese && !text.startsWith('¥')) ? `¥${text}` : text;
-            copyToClipboard(copyText);
-        });
-    });
-}); 
+    return strIns;
+}
